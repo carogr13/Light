@@ -5,231 +5,134 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luz</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
 
-:root{
---fondo:#f2f1ee;
---marco:#d6d4cf;
---amarillo:#f4e7a3;
---gris-texto:#4a4a4a;
+html {
+  scroll-behavior: smooth;
 }
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-scroll-behavior:smooth;
+body {
+  margin:0;
+  background:#f4f4f2;
+  font-family:'Inter', sans-serif;
+  color:#333;
+  overflow-x:hidden;
+  background-image: radial-gradient(rgba(0,0,0,0.015) 1px, transparent 1px);
+  background-size: 3px 3px;
 }
 
-body{
-font-family:'Inter',sans-serif;
-background:var(--fondo);
-color:var(--gris-texto);
-overflow-x:hidden;
+.wrapper {
+  border: double 4px #cfcfcf;
+  margin:20px;
+  padding:40px 20px;
 }
 
-/* textura papel */
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:
-radial-gradient(circle at 20% 20%, rgba(0,0,0,0.02) 0%, transparent 60%),
-radial-gradient(circle at 80% 80%, rgba(0,0,0,0.02) 0%, transparent 60%);
-pointer-events:none;
-z-index:-1;
+section {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  transform:translateY(40px);
+  transition:all 1s ease;
+  text-align:center;
+  position:relative;
 }
 
-/* marco doble */
-.wrapper{
-margin:40px;
-border:1px solid var(--marco);
-padding:20px;
-position:relative;
+section.visible {
+  opacity:1;
+  transform:translateY(0);
 }
 
-.wrapper::after{
-content:"";
-position:absolute;
-inset:10px;
-border:1px solid var(--marco);
-pointer-events:none;
+h1 {
+  font-family:'Playfair Display', serif;
+  font-size:4rem;
+  margin:0;
 }
 
-/* estrellas */
-.stars{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-pointer-events:none;
-z-index:0;
+.luz span {
+  font-style:italic;
+  font-weight:300;
 }
 
-.star{
-position:absolute;
-width:2px;
-height:2px;
-background:var(--amarillo);
-border-radius:50%;
-opacity:0.6;
-animation:fall linear infinite;
+.frase {
+  font-family:'Playfair Display', serif;
+  font-size:2.2rem;
+  max-width:900px;
+  line-height:1.5;
+  margin-top:40px;
 }
 
-@keyframes fall{
-0%{transform:translateY(-10px) translateX(0);opacity:0}
-20%{opacity:1}
-100%{transform:translateY(100vh) translateX(20px);opacity:0}
+.arrow {
+  margin-top:60px;
+  font-size:2rem;
+  cursor:pointer;
+  animation:bounce 2s infinite;
+  color:#c9a227;
 }
 
-/* secciones */
-section{
-min-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-padding:60px 20px;
-text-align:center;
-position:relative;
-z-index:1;
+@keyframes bounce {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(10px); }
 }
 
-.fade-section{
-opacity:0;
-transform:translateY(40px);
-transition:all 1.2s ease;
+/* POLAROIDS */
+
+.polaroids {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:30px;
+  max-width:1000px;
 }
 
-.fade-section.visible{
-opacity:1;
-transform:translateY(0);
+.polaroid {
+  width:200px;
+  background:white;
+  padding:15px 15px 40px 15px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.1);
+  transform:rotate(calc(-5deg + 10deg * var(--r)));
+  transition:transform 0.5s ease;
 }
 
-/* primera pantalla */
-.hero h1{
-font-size:3.5rem;
-font-weight:600;
-color:var(--gris-texto);
-transition:color 1s ease;
+.polaroid img {
+  width:100%;
+  display:block;
 }
 
-.hero h1.reveal{
-color:var(--amarillo);
+.polaroid:hover {
+  transform:scale(1.05) rotate(0deg);
 }
 
-.hero h1 span{
-font-style:italic;
-font-weight:400;
+/* CARTA */
+
+.carta {
+  max-width:800px;
+  text-align:justify;
+  font-size:1.1rem;
+  line-height:1.8;
+  white-space:pre-wrap;
+  border-right:2px solid #c9a227;
+  padding-right:10px;
 }
 
-.hero p{
-font-size:1.6rem;
-max-width:700px;
-margin-top:30px;
-line-height:1.6;
+/* ESTRELLAS */
+
+.star {
+  position:fixed;
+  width:2px;
+  height:60px;
+  background:linear-gradient(to bottom, rgba(255,215,0,0.7), transparent);
+  opacity:0.4;
+  animation:fall linear infinite;
 }
 
-.flecha{
-margin-top:40px;
-font-size:2rem;
-cursor:pointer;
-color:var(--amarillo);
-animation:down 2s infinite;
-}
-
-@keyframes down{
-0%{transform:translateY(0)}
-50%{transform:translateY(10px)}
-100%{transform:translateY(0)}
-}
-
-/* polaroids */
-.polaroid-container{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:40px;
-padding:60px 20px;
-}
-
-.polaroid{
-background:white;
-padding:15px 15px 60px 15px;
-width:200px;
-box-shadow:0 8px 20px rgba(0,0,0,0.2);
-transform:rotate(-3deg) scale(0.9);
-opacity:0;
-transition:all 1s ease;
-cursor:pointer;
-position:relative;
-}
-
-.polaroid img{
-width:100%;
-}
-
-.polaroid.show{
-opacity:1;
-transform:rotate(0deg) scale(1);
-}
-
-.polaroid:hover{
-transform:rotate(0deg) scale(1.05);
-}
-
-/* carta */
-#textoCarta{
-max-width:800px;
-text-align:justify;
-line-height:1.8;
-font-size:1.1rem;
-white-space:pre-line;
-}
-
-/* playlist */
-.playlist-frase{
-font-size:1.3rem;
-margin-bottom:30px;
-}
-
-/* mensajes secretos */
-.secret{
-position:fixed;
-bottom:40px;
-left:50%;
-transform:translateX(-50%);
-background:rgba(255,255,255,0.9);
-padding:10px 20px;
-border-radius:20px;
-font-size:0.9rem;
-opacity:0;
-transition:opacity 0.5s ease;
-}
-
-.secret.show{
-opacity:1;
-}
-
-.highlight{
-color:var(--amarillo);
-}
-
-.fecha{
-position:absolute;
-bottom:10px;
-right:20px;
-font-size:0.7rem;
-opacity:0.4;
-transition:opacity 0.3s ease;
-}
-
-.fecha:hover{
-opacity:1;
-color:var(--amarillo);
+@keyframes fall {
+  from { transform:translateY(-100px) translateX(0); }
+  to { transform:translateY(100vh) translateX(-50px); }
 }
 
 </style>
@@ -237,203 +140,169 @@ color:var(--amarillo);
 
 <body>
 
-<audio id="bgMusic" loop>
-<source src="musica.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="typeSound">
-<source src="type.mp3" type="audio/mpeg">
-</audio>
-
-<div class="stars"></div>
-
 <div class="wrapper">
 
-<section class="hero fade-section">
-<h1 id="luz">Luz, <span>eres tú</span></h1>
-<p>
+<!-- SECCIÓN 1 -->
+<section id="inicio" class="visible">
+
+<h1 class="luz">
+<strong id="luzClick">Luz</strong> <span>eres tú</span>
+</h1>
+
+<div class="frase">
 Algo comenzó un 9 de febrero de 2025…<br>
 pero el tiempo necesitó su propio ritmo<br>
 para que hoy pudiera celebrarte<br>
 como siempre mereciste.
-</p>
-<div class="flecha" onclick="scrollToSection('fotos')">↓</div>
-</section>
-
-<section id="fotos" class="fade-section">
-<div class="polaroid-container">
-<div class="polaroid"><img src="foto1.jpg"></div>
-<div class="polaroid"><img src="foto2.jpg"></div>
-<div class="polaroid"><img src="foto3.jpg"></div>
-<div class="polaroid especial"><img src="foto4.jpg"></div>
-<div class="polaroid"><img src="foto5.jpg"></div>
-<div class="polaroid"><img src="foto6.jpg"></div>
-<div class="polaroid"><img src="foto7.jpg"></div>
-<div class="polaroid"><img src="foto8.jpg"></div>
-<div class="polaroid"><img src="foto9.jpg"></div>
-<div class="polaroid"><img src="foto10.jpg"></div>
-</div>
-<div class="flecha" onclick="scrollToSection('carta')">↓</div>
-</section>
-
-<section id="carta" class="fade-section">
-<div id="textoCarta"></div>
-<div class="flecha" onclick="scrollToSection('playlist')">↓</div>
-</section>
-
-<section id="playlist" class="fade-section">
-<div class="playlist-frase">
-Para que incluso el ruido encuentre <span class="highlight">refugio</span>.
-</div>
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/TU_PLAYLIST" width="300" height="380" frameBorder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-</section>
-
-<div class="fecha">09•02•2025</div>
-
 </div>
 
-<div id="secretMessage" class="secret"></div>
+<div class="arrow" onclick="scrollToSection('fotos')">↓</div>
+
+</section>
+
+<!-- SECCIÓN FOTOS -->
+<section id="fotos">
+
+<div class="polaroids">
+  <div class="polaroid" style="--r:0.2"><img src="https://via.placeholder.com/300x300"></div>
+  <div class="polaroid" style="--r:0.8"><img src="https://via.placeholder.com/300x300"></div>
+  <div class="polaroid" style="--r:0.4"><img src="https://via.placeholder.com/300x300"></div>
+  <div class="polaroid" style="--r:0.6"><img src="https://via.placeholder.com/300x300"></div>
+</div>
+
+<div class="arrow" onclick="scrollToSection('cartaSection')">↓</div>
+
+</section>
+
+<!-- CARTA -->
+<section id="cartaSection">
+
+<div id="carta" class="carta"></div>
+
+<div class="arrow" onclick="scrollToSection('musica')">↓</div>
+
+</section>
+
+<!-- MÚSICA -->
+<section id="musica">
+
+<h2 style="font-family:'Playfair Display',serif;font-size:2rem;">Nuestra música</h2>
+
+<p>Puedes agregar aquí tu playlist de Spotify cuando la tengas.</p>
+
+</section>
+
+</div>
 
 <script>
 
-/* estrellas */
-for(let i=0;i<35;i++){
-let star=document.createElement("div");
-star.className="star";
-star.style.left=Math.random()*100+"%";
-star.style.animationDuration=(6+Math.random()*6)+"s";
-document.querySelector(".stars").appendChild(star);
-}
-
-/* scroll */
+/* SCROLL */
 function scrollToSection(id){
-document.getElementById(id).scrollIntoView({behavior:"smooth"});
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
-/* música */
-let musicStarted=false;
-document.addEventListener("click",()=>{
-if(!musicStarted){
-document.getElementById("bgMusic").volume=0.4;
-document.getElementById("bgMusic").play();
-musicStarted=true;
+/* FADE IN SECTIONS */
+const sections=document.querySelectorAll("section");
+window.addEventListener("scroll",()=>{
+  sections.forEach(sec=>{
+    const rect=sec.getBoundingClientRect();
+    if(rect.top<window.innerHeight-100){
+      sec.classList.add("visible");
+    }
+  });
+});
+
+/* ESTRELLAS */
+for(let i=0;i<20;i++){
+  let star=document.createElement("div");
+  star.classList.add("star");
+  star.style.left=Math.random()*100+"%";
+  star.style.animationDuration=(5+Math.random()*5)+"s";
+  document.body.appendChild(star);
 }
-});
 
-/* fade */
-const faders=document.querySelectorAll(".fade-section");
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("visible");
-}
-});
-},{threshold:0.2});
-faders.forEach(f=>observer.observe(f));
+/* CARTA TYPEWRITER */
 
-/* revelar luz */
-document.addEventListener("click",()=>{
-document.getElementById("luz").classList.add("reveal");
-},{once:true});
-
-/* polaroids animadas */
-document.querySelectorAll(".polaroid").forEach(p=>{
-observer.observe(p);
-});
-
-/* carta */
-let cartaEscrita=false;
 const texto=`Hola, vida linda.
 
-Hoy cumplo mi pequeño propósito: aportar un granito de luz para que tu cumpleaños número veintiséis sea tan especial como tú.
+Cumpliendo con mi propósito de aportar un pequeño granito de arena para que tu cumpleaños número veintiséis sea especial, hoy te entrego este espacio como recordatorio de lo que significas en mi vida, del lugar que ocupas y de mi deseo constante de que recuerdes que mereces todo lo hermoso que das.
 
-Este espacio es un recordatorio de lo que significas en mi vida, del lugar inmenso que ocupas en mi corazón y de mi intención constante de que nunca olvides cuánto mereces. Estoy profundamente orgullosa de ti: de lo que has logrado, de la persona que eres, del ejemplo que representas para quienes te rodean. Eres luz en mi vida, y desde el primer día quise que lo supieras.
+No me cansaré nunca de decir que estoy profundamente orgullosa de ti. Eres un ser humano admirable, un ejemplo silencioso de fortaleza, ternura y determinación. Eres luz en mi vida, y desde el primer día quise que lo supieras.
 
-Ojalá, si vuelves aquí en una semana, en un mes o en un año, recuerdes que siempre debes rodearte de personas que te celebren y te valoren. Nunca aceptes lo mínimo. No naciste para lo básico. Eres extraordinaria y mereces una vida extraordinaria.
+Deseo que, si algún día vuelves aquí —en una semana, en un mes o en un año— recuerdes rodearte siempre de personas que te celebren como yo te celebro hoy. No aceptes lo mínimo. No mereces nada básico. Eres extraordinaria, y solo cosas extraordinarias deberían encontrarte.
 
-Te quiero, te admiro, te amo. Y mientras la vida me lo permita, quiero estar para ti.
+Te quiero, te admiro y te amo. Y mientras la vida me lo permita, quiero apoyarte, cuidarte, mimarte y acompañarte incluso en tus caprichos, ideas locas y ocurrencias inesperadas.
 
-Feliz cumpleaños a todas tus versiones.
-En esta dimensión y en todas las que existan.
+Feliz cumpleaños a la Catalina con botitas rojas.
+Feliz cumpleaños a la Catalina de los pucheros fotografiados.
+Feliz cumpleaños a la Catalina que llegaba tarde al colegio y aun así seguía brillando.
+Feliz cumpleaños a la Catalina que repitió tres veces el mismo año y jamás dejó que eso definiera su valor.
+Feliz cumpleaños a la Catalina que resistió no una, sino tres decepciones amorosas.
+Feliz cumpleaños a la Catalina que fue poliamada sin merecer confusión.
+Feliz cumpleaños a la Catalina que intentaron usar y aun así siguió creyendo en el amor.
+Feliz cumpleaños a la Catalina que se tinturó el cabello para cerrar ciclos.
+Feliz cumpleaños a la Catalina que tuvo su primera borrachera en casa.
+Feliz cumpleaños a la Catalina que atravesó injusticias que nunca debieron tocarla.
+Feliz cumpleaños a la Catalina que hizo su tesis con su ex (sí, esa misma).
+Feliz cumpleaños a la Catalina que eligió convertir a Sarhy e Isabella en hermanas de vida.
+Feliz cumpleaños a la Catalina que necesitó el apoyo del mundo cuando su papá partió a Estados Unidos.
+Feliz cumpleaños a la Catalina que lloró cuando Vainilla se volvió una estrella.
+Feliz cumpleaños a la Catalina que conocí hace más de un año en un lugar inesperado.
+Feliz cumpleaños a la Catalina que habla con perritos y me enamora con eso.
+Feliz cumpleaños a la Catalina que me desespera diez minutos explicando algo que podría explicar en dos.
+Feliz cumpleaños a la Catalina de los audios infinitos.
+Feliz cumpleaños a la Catalina de las selfies espontáneas.
+Feliz cumpleaños a la Catalina que comenta hasta el más mínimo detalle que le comparto.
 
-— C.`;
+Y, sobre todo, feliz cumpleaños a todas las Catalinas que existen en este universo y en todas las dimensiones posibles.
 
-function escribir(){
+Gracias por ser refugio.
+Gracias por ser luz.
+Gracias por ser hogar.`;
+
+
 let i=0;
-function maquina(){
-if(i<texto.length){
-document.getElementById("textoCarta").textContent+=texto.charAt(i);
-document.getElementById("typeSound").currentTime=0;
-document.getElementById("typeSound").play();
-i++;
-setTimeout(maquina,25);
-}
-}
-maquina();
+let carta=document.getElementById("carta");
+let started=false;
+
+function typeWriter(){
+  if(i<texto.length){
+    carta.innerHTML+=texto.charAt(i);
+    i++;
+    setTimeout(typeWriter,25);
+  }
 }
 
-new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting && !cartaEscrita){
-cartaEscrita=true;
-escribir();
-}
-});
-},{threshold:0.4}).observe(document.getElementById("carta"));
-
-/* secretos */
-function showSecret(text){
-let box=document.getElementById("secretMessage");
-box.innerHTML=text;
-box.classList.add("show");
-setTimeout(()=>box.classList.remove("show"),4000);
-}
-
-/* triple click luz */
-let clicks=0;
-document.getElementById("luz").addEventListener("click",()=>{
-clicks++;
-if(clicks===3){
-showSecret(`Siempre supe que eras <span class="highlight">tú</span>.`);
-clicks=0;
-}
+window.addEventListener("scroll",()=>{
+  const cartaPos=document.getElementById("cartaSection").getBoundingClientRect().top;
+  if(cartaPos<window.innerHeight/1.3 && !started){
+    started=true;
+    typeWriter();
+  }
 });
 
-/* polaroid especial */
-document.querySelector(".especial").addEventListener("click",()=>{
-showSecret(`Aquí empezó a sentirse <span class="highlight">hogar</span>.`);
-});
+/* AUDIO GENERADO */
 
-/* seleccionar extraordinaria */
-document.addEventListener("mouseup",()=>{
-if(window.getSelection().toString().includes("extraordinaria")){
-showSecret(`Y todavía no dimensionas cuánto <span class="highlight">iluminas</span>.`);
+let audioCtx;
+function startMusic(){
+  if(!audioCtx){
+    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    playAmbient();
+  }
 }
-});
 
-/* doble click playlist */
-document.querySelector(".playlist-frase").addEventListener("dblclick",()=>{
-showSecret(`Incluso el ruido encuentra <span class="highlight">refugio</span> en ti.`);
-});
-
-/* escribir 5 teclas */
-let keyCount=0;
-document.addEventListener("keydown",()=>{
-keyCount++;
-if(keyCount===5){
-showSecret(`La respuesta siempre fue <span class="highlight">refugio</span>.`);
-keyCount=0;
+function playAmbient(){
+  const osc=audioCtx.createOscillator();
+  const gain=audioCtx.createGain();
+  osc.type="sine";
+  osc.frequency.value=220;
+  gain.gain.value=0.02;
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
 }
-});
 
-/* mantener presionado */
-let pressTimer;
-document.addEventListener("mousedown",()=>{
-pressTimer=setTimeout(()=>{
-showSecret(`El mundo baja la voz cuando aparece tu <span class="highlight">luz</span>.`);
-},4000);
-});
-document.addEventListener("mouseup",()=>clearTimeout(pressTimer));
+document.body.addEventListener("click",startMusic,{once:true});
 
 </script>
 
