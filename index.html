@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luz - Página Final (Provisional)</title>
+<title>Luz - Página Provisional</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -12,53 +12,29 @@
 html { scroll-behavior: smooth; }
 body { font-family:'Inter',sans-serif; background:#f6f1e8; color:#111; overflow-x:hidden; }
 
-.wrapper {
-  border: double 4px #cfcfcf;
-  margin:20px; padding:40px 20px;
-}
+.wrapper { border: double 4px #cfcfcf; margin:20px; padding:40px 20px; }
 
-section {
-  min-height:100vh; display:flex; flex-direction:column;
-  justify-content:center; align-items:center; opacity:1; transform:translateY(0);
-  transition:all 1s ease; text-align:center; position:relative;
-}
+section { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
 
 h1 { font-family:'Playfair Display', serif; font-size:4rem; font-weight:700; }
 .luz span { font-style:italic; font-weight:300; }
 .frase { font-family:'Playfair Display', serif; font-size:2.2rem; max-width:900px; line-height:1.5; margin-top:40px; }
-.arrow { margin-top:60px; font-size:2rem; cursor:pointer; color:#c9a227; animation:bounce 2s infinite; }
-@keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(10px); } }
+.arrow { margin-top:60px; font-size:2rem; cursor:pointer; color:#c9a227; }
 
-.polaroids {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:40px; margin-top:60px; justify-items:center;
-}
-.polaroid {
-  width:220px; background:#fff; padding:15px 15px 40px 15px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.1);
-  transform:rotate(calc(var(--r)*1deg)) translateY(40px);
-  opacity:0;
-  transition:all 0.8s ease;
-}
-.polaroid.show { opacity:1; transform:rotate(calc(var(--r)*1deg)) translateY(0); }
+.polaroids { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:40px; margin-top:60px; justify-items:center; }
+.polaroid { width:220px; background:#fff; padding:15px 15px 40px 15px; box-shadow:0 10px 30px rgba(0,0,0,0.1); }
 .polaroid img { width:100%; display:block; }
-.polaroid:hover { transform:scale(1.05) rotate(0deg); }
 
-.carta {
-  max-width:800px; text-align:justify; font-size:1.1rem; line-height:1.8;
-  white-space:pre-wrap; border-right:2px solid #c9a227; padding-right:10px; margin-top:50px;
-}
+.carta { max-width:800px; text-align:justify; font-size:1.1rem; line-height:1.8; white-space:pre-wrap; border-right:2px solid #c9a227; padding-right:10px; margin-top:50px; }
 
 .playlist { text-align:center; margin-top:80px; }
 .playlist h2 { margin-bottom:40px; font-size:28px; font-weight:400; font-family:'Playfair Display',serif; }
 .playlist iframe { border-radius:12px; width:100%; max-width:600px; height:380px; }
-
 </style>
 </head>
-
 <body>
 
-<div id="mainContent" class="wrapper">
+<div class="wrapper">
 
   <section id="inicio">
     <h1 class="luz"><strong>Luz</strong> <span>eres tú</span></h1>
@@ -99,24 +75,9 @@ const polaroidContainer = document.getElementById("polaroidContainer");
 for(let i=1;i<=33;i++){
   let div = document.createElement("div");
   div.className="polaroid";
-  div.style.setProperty("--r",Math.floor(Math.random()*6-3));
-  div.innerHTML = `<img src="img/${String(i).padStart(2,'0')}.jpg">`;
+  div.innerHTML = `<img src="img/${String(i).padStart(2,'0')}.jpg" alt="Foto ${i}">`;
   polaroidContainer.appendChild(div);
 }
-
-// Animación polaroids al cargar
-function revealPolaroids(){
-  const polaroids = document.querySelectorAll(".polaroid");
-  const observer = new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add("show");
-      }
-    });
-  },{threshold:0.2});
-  polaroids.forEach(p=>observer.observe(p));
-}
-revealPolaroids();
 
 // CARTA TYPEWRITER
 const texto=`Hola, vida linda.
@@ -162,10 +123,11 @@ function typeWriter(){
   if(i<texto.length){
     carta.innerHTML += texto.charAt(i);
     i++;
-    setTimeout(typeWriter,25);
+    setTimeout(typeWriter,15);
   }
 }
 typeWriter();
+
 </script>
 
 </body>
