@@ -3,148 +3,112 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para ti</title>
+<title>21.03.2026</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
-font-family:'Cormorant Garamond',serif;
+background:#000;
+color:#eaeaea;
+font-family:'Playfair Display', serif;
 overflow-x:hidden;
-}
-
-/* -------------------- SCREENS -------------------- */
-
-.screen{
-position:fixed;
-inset:0;
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
 transition:opacity 1s ease;
 }
 
-.screen.active{
+.hidden{opacity:0;pointer-events:none}
+
+.center-screen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100vh;
 display:flex;
-}
-
-/* -------------------- COUNTDOWN -------------------- */
-
-#countdownScreen{
-background:#000;
-color:#eaeaea;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 text-align:center;
 padding:40px;
+transition:opacity 1s ease;
 }
 
-#countdownScreen h1{
+h1{
 font-weight:300;
-font-size:28px;
+letter-spacing:2px;
 margin-bottom:40px;
 }
 
 #countdown{
-font-size:32px;
-letter-spacing:3px;
+display:flex;
+gap:30px;
+font-size:2rem;
 }
 
-/* -------------------- PASSWORD -------------------- */
-
-#passwordScreen{
-background:#000;
-color:#eaeaea;
-text-align:center;
-padding:40px;
+.time-box{
+display:flex;
+flex-direction:column;
 }
 
-#passwordScreen h2{
-font-weight:300;
-margin-bottom:30px;
+.time-box span:first-child{
+font-size:3rem;
 }
 
 input{
-background:transparent;
+background:none;
 border:none;
 border-bottom:1px solid #fff3b0;
 color:#fff3b0;
-font-size:20px;
+font-size:1.5rem;
 text-align:center;
-padding:8px;
+padding:10px;
+margin-top:20px;
 outline:none;
 }
 
 button{
-margin-top:20px;
-padding:8px 20px;
 background:#fff3b0;
 border:none;
+padding:10px 20px;
+margin-top:20px;
 cursor:pointer;
-font-family:'Cormorant Garamond',serif;
+font-family:'Playfair Display', serif;
 }
 
-#error{
-margin-top:15px;
-font-size:16px;
-opacity:0.8;
+#errorMessage{
+margin-top:20px;
+font-size:0.9rem;
+color:#888;
+min-height:20px;
 }
-
-/* -------------------- MAIN CONTENT -------------------- */
 
 #mainContent{
-display:none;
-background:#f6f1e8;
-color:#111;
-min-height:100vh;
-padding:60px 0;
+padding:100px 10%;
+opacity:0;
+transition:opacity 2s ease;
 }
 
-.wrapper{
-max-width:900px;
-margin:auto;
-border:2px solid #000;
-padding:60px 40px;
-background:#f6f1e8;
+.section{
+margin-bottom:120px;
 }
-
-/* -------------------- INTRO -------------------- */
-
-.intro{
-text-align:center;
-margin-bottom:80px;
-}
-
-.intro h1{
-font-size:48px;
-font-weight:600;
-}
-
-.intro p{
-font-size:22px;
-margin-top:30px;
-line-height:1.6;
-}
-
-/* -------------------- POLAROIDS -------------------- */
 
 .polaroids{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:40px;
-margin-bottom:100px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:60px;
+margin-top:60px;
 }
 
 .polaroid{
-background:#fff;
+background:#f8f8f8;
 padding:15px 15px 40px 15px;
-width:220px;
-box-shadow:0 10px 20px rgba(0,0,0,0.2);
-transform:rotate(calc(-3deg + 6deg * var(--r)));
+box-shadow:0 10px 30px rgba(255,243,176,0.1);
+transform:rotate(calc(var(--r)*1deg));
 opacity:0;
-transition:all 1s ease;
+transform-origin:center;
+transition:all 0.8s ease;
 }
 
 .polaroid img{
@@ -152,160 +116,153 @@ width:100%;
 display:block;
 }
 
-.polaroid.visible{
+.show{
 opacity:1;
-transform:rotate(calc(-3deg + 6deg * var(--r))) translateY(0);
+transform:rotate(calc(var(--r)*1deg)) translateY(0);
 }
-
-/* -------------------- LETTER -------------------- */
-
-.letter{
-margin:100px 0;
-font-size:20px;
-line-height:1.9;
-text-align:justify;
-white-space:pre-line;
-opacity:0;
-transition:opacity 1.5s ease;
-}
-
-.letter.visible{
-opacity:1;
-}
-
-/* -------------------- PLAYLIST -------------------- */
-
-.playlist{
-text-align:center;
-margin-top:80px;
-}
-
-.playlist h2{
-margin-bottom:40px;
-font-size:28px;
-font-weight:400;
-}
-
-iframe{
-border-radius:12px;
-width:100%;
-max-width:600px;
-height:380px;
-}
-
-/* -------------------- FADE -------------------- */
 
 .fade-out{
 opacity:0;
-transition:opacity 1s ease;
+}
+
+.fade-in{
+opacity:1;
 }
 </style>
 </head>
 
 <body>
 
-<!-- COUNTDOWN -->
-<div id="countdownScreen" class="screen">
+<!-- FASE 1 -->
+<div id="countdownScreen" class="center-screen">
 <h1>Hay momentos que solo se abren para quien presta atención.</h1>
-<div id="countdown"></div>
+<div id="countdown">
+<div class="time-box"><span id="days">0</span><span>Días</span></div>
+<div class="time-box"><span id="hours">0</span><span>Horas</span></div>
+<div class="time-box"><span id="minutes">0</span><span>Min</span></div>
+<div class="time-box"><span id="seconds">0</span><span>Seg</span></div>
+</div>
 </div>
 
-<!-- PASSWORD -->
-<div id="passwordScreen" class="screen">
-<h2>¿Cuál es la hora exacta de la primera foto que tomé relacionada contigo?</h2>
+<!-- FASE 2 -->
+<div id="passwordScreen" class="center-screen hidden">
+<h1>¿Cuál es la hora exacta de la primera foto que tomé relacionada contigo?</h1>
 <input type="text" id="passwordInput" placeholder="00:00">
-<button onclick="checkPassword()">Desbloquear</button>
-<div id="error"></div>
+<button onclick="checkPassword()">Continuar</button>
+<div id="errorMessage"></div>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- FASE 4 -->
 <div id="mainContent">
-<div class="wrapper">
 
-<div class="intro">
-<h1>Luz</h1>
-<p>
-Algo comenzó un 9 de febrero de 2025…
-pero el tiempo necesitó su propio ritmo
-para que hoy pudiera celebrarte
-como siempre mereciste.
+<div class="section">
+<h1>Feliz cumpleaños.</h1>
+<p style="margin-top:40px; max-width:700px; line-height:1.8;">
+A la Catalina que empezó sin saber que iba a quedarse.<br><br>
+A la Catalina que sonreía sin imaginar que alguien estaba empezando a mirarla distinto.<br><br>
+A la Catalina que no sabía que una foto a las 20:13 iba a convertirse en historia.<br><br>
+A la Catalina que fue creciendo, cambiando, entendiendo.<br><br>
+A la Catalina que aprendió, que sintió, que dudó.<br><br>
+A la Catalina que ama con profundidad.<br><br>
+Y a la Catalina que hoy cumple años…<br><br>
+Gracias por existir en cada una de tus versiones.
 </p>
 </div>
 
-<div class="polaroids" id="polaroids"></div>
-
-<div class="letter" id="letter">
-Hola, vida linda.
-
-Cumpliendo con mi propósito de aportar un pequeño granito de arena para que tu cumpleaños número veintiséis sea especial, hoy te entrego este espacio como recordatorio de lo que significas en mi vida, del lugar que ocupas y de mis intenciones de hacerte sentir todo lo hermoso que tú le das al mundo.
-
-No me cansaré jamás de decir que me siento profundamente orgullosa de ti, de todo lo que has logrado, de la mujer que eres. Eres luz en mi vida, y eso quise decirte desde el primer día, aunque a veces las palabras no alcanzaran.
-
-Le deseo un feliz cumpleaños a la Catalina con botitas rojas.
-A la Catalina a la que le tomaban fotos de pucheros.
-A la Catalina que llegaba tarde al colegio y la grababan.
-A la Catalina que repitió tres veces el mismo año.
-A la Catalina que resistió no una, sino tres decepciones amorosas.
-A la Catalina que poliamaron.
-A la Catalina que usaron sin entender su valor.
-A la Catalina que se tinturó el cabello para cerrar ciclos.
-A la Catalina que tuvo su primera borrachera en casa.
-A la Catalina que atravesó injusticias que nunca mereció.
-A la Catalina que hizo tesis con su ex (sí, esa también).
-
-Feliz cumpleaños a la Catalina que convirtió a Sarhy e Isabella en sus refugios.
-A la Catalina que necesitó abrazos cuando su papá partió a Estados Unidos.
-A la Catalina que lloró cuando Vainilla se volvió estrella.
-A la Catalina que conocí hace más de un año en un espacio inesperado.
-A la Catalina que me enamora hablando con perritos.
-A la Catalina que me vuelve loca cuando explica en diez minutos lo que podría explicar en dos.
-A la Catalina que ama los audios.
-A la Catalina que envía selfies de su linda carita.
-A la Catalina que me escucha, me apoya y celebra cada detalle mío.
-
-Feliz cumpleaños a todas las versiones tuyas.
-A las que fuiste.
-A la que eres.
-Y a todas las que aún están por convertirse en realidad.
-
-Te admiro.  
-Te quiero.  
-Te amo.
+<div class="section">
+<div class="polaroids">
+<script>
+for(let i=1;i<=33;i++){
+document.write(`
+<div class="polaroid" style="--r:${Math.floor(Math.random()*6-3)}">
+<img src="img/${String(i).padStart(2,'0')}.jpg">
+</div>
+`);
+}
+</script>
+</div>
 </div>
 
-<div class="playlist">
-<h2>Canciones que me recuerdan a ti</h2>
-<iframe src="https://open.spotify.com/embed/playlist/2YTA58o94wbbxc3rWefPfE"
-allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-</iframe>
-</div>
-
-</div>
 </div>
 
 <script>
-// -------- POLAROIDS --------
-const polaroidContainer = document.getElementById("polaroids");
-for(let i=1;i<=22;i++){
-    let div = document.createElement("div");
-    div.className="polaroid";
-    div.style.setProperty("--r",Math.random());
-    div.innerHTML = `<img src="img/${String(i).padStart(2,'0')}.jpg">`;
-    polaroidContainer.appendChild(div);
+// COUNTDOWN
+const targetDate = new Date("2026-03-21T00:00:00-05:00").getTime();
+const countdownScreen = document.getElementById("countdownScreen");
+const passwordScreen = document.getElementById("passwordScreen");
+const mainContent = document.getElementById("mainContent");
+
+const interval = setInterval(()=>{
+const now = new Date().getTime();
+const distance = targetDate - now;
+
+if(distance <= 0){
+clearInterval(interval);
+countdownScreen.classList.add("fade-out");
+setTimeout(()=>{
+countdownScreen.style.display="none";
+passwordScreen.classList.remove("hidden");
+passwordScreen.classList.add("fade-in");
+},1000);
 }
 
-function revealPolaroids(){
-    document.querySelectorAll(".polaroid").forEach((p,i)=>{
-        setTimeout(()=>p.classList.add("visible"), i*150);
-    });
-    document.getElementById("letter").classList.add("visible");
+document.getElementById("days").innerText = Math.floor(distance/(1000*60*60*24));
+document.getElementById("hours").innerText = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+document.getElementById("minutes").innerText = Math.floor((distance%(1000*60*60))/(1000*60));
+document.getElementById("seconds").innerText = Math.floor((distance%(1000*60))/1000);
+
+},1000);
+
+// Si ya pasó la fecha
+if(new Date().getTime() > targetDate){
+countdownScreen.style.display="none";
+passwordScreen.classList.remove("hidden");
 }
 
-// -------- TEMPORAL: Mostrar todo directamente para previsualización --------
-document.getElementById("countdownScreen").style.display = "none";
-document.getElementById("passwordScreen").style.display = "none";
-document.getElementById("mainContent").style.display = "block";
-revealPolaroids();
+// PASSWORD
+const messages=[
+"No exactamente.",
+"Casi.",
+"Piensa con precisión.",
+"Recuerda bien.",
+"La memoria también tiene detalles.",
+"Observa mejor.",
+"No es casualidad."
+];
+let errorIndex=0;
+
+function checkPassword(){
+const input=document.getElementById("passwordInput").value.trim();
+if(input==="20:13"){
+unlock();
+}else{
+document.getElementById("errorMessage").innerText=messages[errorIndex%messages.length];
+errorIndex++;
+}
+}
+
+// UNLOCK
+function unlock(){
+passwordScreen.classList.add("fade-out");
+setTimeout(()=>{
+passwordScreen.style.display="none";
+mainContent.style.opacity="1";
+revealPhotos();
+},1000);
+}
+
+// PHOTO REVEAL
+function revealPhotos(){
+const polaroids=document.querySelectorAll(".polaroid");
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show");
+}
+});
+},{threshold:0.2});
+polaroids.forEach(p=>observer.observe(p));
+}
 </script>
 
 </body>
