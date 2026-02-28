@@ -205,7 +205,7 @@ transition:opacity 1s ease;
 <body>
 
 <!-- COUNTDOWN -->
-<div id="countdownScreen" class="screen active">
+<div id="countdownScreen" class="screen">
 <h1>Hay momentos que solo se abren para quien presta atención.</h1>
 <div id="countdown"></div>
 </div>
@@ -284,75 +284,26 @@ allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-pictur
 </div>
 
 <script>
-// -------- COUNTDOWN --------
-
-const targetDate = new Date("2026-03-21T00:00:00-05:00");
-const countdown = document.getElementById("countdown");
-const countdownScreen = document.getElementById("countdownScreen");
-const passwordScreen = document.getElementById("passwordScreen");
-
-function updateCountdown(){
-const now = new Date();
-const diff = targetDate - now;
-
-if(diff <= 0){
-countdownScreen.classList.remove("active");
-passwordScreen.classList.add("active");
-return;
-}
-
-const days = Math.floor(diff/(1000*60*60*24));
-const hours = Math.floor((diff/(1000*60*60))%24);
-const minutes = Math.floor((diff/1000/60)%60);
-const seconds = Math.floor((diff/1000)%60);
-
-countdown.innerHTML =
-days+"d "+hours+"h "+minutes+"m "+seconds+"s";
-}
-
-setInterval(updateCountdown,1000);
-updateCountdown();
-
-// -------- PASSWORD --------
-
-function checkPassword(){
-const input = document.getElementById("passwordInput").value;
-if(input === "20:13"){
-passwordScreen.classList.remove("active");
-document.getElementById("mainContent").style.display="block";
-window.scrollTo(0,0);
-revealPolaroids();
-}
-else{
-document.getElementById("error").innerText =
-"Intenta de nuevo. Presta atención a los detalles.";
-}
-}
-
 // -------- POLAROIDS --------
-
 const polaroidContainer = document.getElementById("polaroids");
-
 for(let i=1;i<=22;i++){
-let div = document.createElement("div");
-div.className="polaroid";
-div.style.setProperty("--r",Math.random());
-div.innerHTML = `<img src="img/${String(i).padStart(2,'0')}.jpg">`;
-polaroidContainer.appendChild(div);
+    let div = document.createElement("div");
+    div.className="polaroid";
+    div.style.setProperty("--r",Math.random());
+    div.innerHTML = `<img src="img/${String(i).padStart(2,'0')}.jpg">`;
+    polaroidContainer.appendChild(div);
 }
 
 function revealPolaroids(){
-document.querySelectorAll(".polaroid").forEach((p,i)=>{
-setTimeout(()=>p.classList.add("visible"), i*150);
-});
-document.getElementById("letter").classList.add("visible");
+    document.querySelectorAll(".polaroid").forEach((p,i)=>{
+        setTimeout(()=>p.classList.add("visible"), i*150);
+    });
+    document.getElementById("letter").classList.add("visible");
 }
 
-// --- TEMPORAL: Mostrar todo directamente para previsualización ---
-countdownScreen.classList.remove("active");
-countdownScreen.style.display = "none";   // <-- fuerza que desaparezca
-passwordScreen.classList.remove("active");
-passwordScreen.style.display = "none";    // <-- opcional, si estaba visible
+// -------- TEMPORAL: Mostrar todo directamente para previsualización --------
+document.getElementById("countdownScreen").style.display = "none";
+document.getElementById("passwordScreen").style.display = "none";
 document.getElementById("mainContent").style.display = "block";
 revealPolaroids();
 </script>
