@@ -3,18 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>21.03.2026</title>
+<title>Para ti</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
 body{
-margin:0;
-background:#000;
-color:#eaeaea;
-font-family: 'Helvetica Neue', sans-serif;
+font-family:'Cormorant Garamond',serif;
 overflow-x:hidden;
 }
 
-/* Pantallas */
+/* -------------------- SCREENS -------------------- */
+
 .screen{
 position:fixed;
 inset:0;
@@ -22,45 +24,56 @@ display:none;
 justify-content:center;
 align-items:center;
 flex-direction:column;
-text-align:center;
-background:#000;
-transition:opacity .8s ease;
+transition:opacity 1s ease;
 }
 
 .screen.active{
 display:flex;
 }
 
-/* Countdown */
-.counter{
-font-size:3rem;
+/* -------------------- COUNTDOWN -------------------- */
+
+#countdownScreen{
+background:#000;
+color:#eaeaea;
+text-align:center;
+padding:40px;
+}
+
+#countdownScreen h1{
+font-weight:300;
+font-size:28px;
+margin-bottom:40px;
+}
+
+#countdown{
+font-size:32px;
 letter-spacing:3px;
-margin-top:20px;
 }
 
-.counter span{
-margin:0 10px;
+/* -------------------- PASSWORD -------------------- */
+
+#passwordScreen{
+background:#000;
+color:#eaeaea;
+text-align:center;
+padding:40px;
 }
 
-.subtitle{
-font-size:1.2rem;
-color:#fff3b0;
+#passwordScreen h2{
+font-weight:300;
 margin-bottom:30px;
-max-width:600px;
-line-height:1.6;
 }
 
-/* Password */
 input{
 background:transparent;
 border:none;
 border-bottom:1px solid #fff3b0;
-color:#fff;
-font-size:1.2rem;
+color:#fff3b0;
+font-size:20px;
 text-align:center;
-padding:10px;
+padding:8px;
 outline:none;
-width:200px;
 }
 
 button{
@@ -69,36 +82,69 @@ padding:8px 20px;
 background:#fff3b0;
 border:none;
 cursor:pointer;
-transition:.3s;
+font-family:'Cormorant Garamond',serif;
 }
 
-button:hover{
-opacity:.8;
-}
-
-#errorMessage{
+#error{
 margin-top:15px;
-font-size:.9rem;
-color:#fff3b0;
-min-height:20px;
+font-size:16px;
+opacity:0.8;
 }
 
-/* Contenido principal */
+/* -------------------- MAIN CONTENT -------------------- */
+
 #mainContent{
-opacity:0;
-transition:opacity 1.2s ease;
-padding:120px 20px;
+display:none;
+background:#f6f1e8;
+color:#111;
+min-height:100vh;
+padding:60px 0;
+}
+
+.wrapper{
+max-width:900px;
+margin:auto;
+border:2px solid #000;
+padding:60px 40px;
+background:#f6f1e8;
+}
+
+/* -------------------- INTRO -------------------- */
+
+.intro{
 text-align:center;
+margin-bottom:80px;
+}
+
+.intro h1{
+font-size:48px;
+font-weight:600;
+}
+
+.intro p{
+font-size:22px;
+margin-top:30px;
+line-height:1.6;
+}
+
+/* -------------------- POLAROIDS -------------------- */
+
+.polaroids{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:40px;
+margin-bottom:100px;
 }
 
 .polaroid{
+background:#fff;
+padding:15px 15px 40px 15px;
 width:220px;
-background:#111;
-padding:10px 10px 30px 10px;
-margin:40px auto;
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
+transform:rotate(calc(-3deg + 6deg * var(--r)));
 opacity:0;
-transform:translateY(40px) rotate(var(--r));
-transition:all 1.2s ease;
+transition:all 1s ease;
 }
 
 .polaroid img{
@@ -106,9 +152,52 @@ width:100%;
 display:block;
 }
 
-.polaroid.show{
+.polaroid.visible{
 opacity:1;
-transform:translateY(0) rotate(var(--r));
+transform:rotate(calc(-3deg + 6deg * var(--r))) translateY(0);
+}
+
+/* -------------------- LETTER -------------------- */
+
+.letter{
+margin:100px 0;
+font-size:20px;
+line-height:1.9;
+text-align:justify;
+white-space:pre-line;
+opacity:0;
+transition:opacity 1.5s ease;
+}
+
+.letter.visible{
+opacity:1;
+}
+
+/* -------------------- PLAYLIST -------------------- */
+
+.playlist{
+text-align:center;
+margin-top:80px;
+}
+
+.playlist h2{
+margin-bottom:40px;
+font-size:28px;
+font-weight:400;
+}
+
+iframe{
+border-radius:12px;
+width:100%;
+max-width:600px;
+height:380px;
+}
+
+/* -------------------- FADE -------------------- */
+
+.fade-out{
+opacity:0;
+transition:opacity 1s ease;
 }
 </style>
 </head>
@@ -117,129 +206,146 @@ transform:translateY(0) rotate(var(--r));
 
 <!-- COUNTDOWN -->
 <div id="countdownScreen" class="screen active">
-<div class="subtitle">
-Hay momentos que solo se abren para quien presta atención.
-<br><br>
-Prepárate para el reto que está a punto de comenzar.
-</div>
-<div class="counter">
-<span id="days">0</span>d
-<span id="hours">0</span>h
-<span id="minutes">0</span>m
-<span id="seconds">0</span>s
-</div>
+<h1>Hay momentos que solo se abren para quien presta atención.</h1>
+<div id="countdown"></div>
 </div>
 
 <!-- PASSWORD -->
 <div id="passwordScreen" class="screen">
-<div class="subtitle">
-¿Cuál es la hora exacta de la primera foto que tomé relacionada contigo?
-</div>
-<input id="passwordInput" type="text" placeholder="00:00">
+<h2>¿Cuál es la hora exacta de la primera foto que tomé relacionada contigo?</h2>
+<input type="text" id="passwordInput" placeholder="00:00">
 <button onclick="checkPassword()">Desbloquear</button>
-<div id="errorMessage"></div>
+<div id="error"></div>
 </div>
 
-<!-- CONTENIDO -->
+<!-- MAIN CONTENT -->
 <div id="mainContent">
-<div id="photoContainer"></div>
+<div class="wrapper">
+
+<div class="intro">
+<h1>Luz</h1>
+<p>
+Algo comenzó un 9 de febrero de 2025…
+pero el tiempo necesitó su propio ritmo
+para que hoy pudiera celebrarte
+como siempre mereciste.
+</p>
+</div>
+
+<div class="polaroids" id="polaroids"></div>
+
+<div class="letter" id="letter">
+Hola, vida linda.
+
+Cumpliendo con mi propósito de aportar un pequeño granito de arena para que tu cumpleaños número veintiséis sea especial, hoy te entrego este espacio como recordatorio de lo que significas en mi vida, del lugar que ocupas y de mis intenciones de hacerte sentir todo lo hermoso que tú le das al mundo.
+
+No me cansaré jamás de decir que me siento profundamente orgullosa de ti, de todo lo que has logrado, de la mujer que eres. Eres luz en mi vida, y eso quise decirte desde el primer día, aunque a veces las palabras no alcanzaran.
+
+Le deseo un feliz cumpleaños a la Catalina con botitas rojas.
+A la Catalina a la que le tomaban fotos de pucheros.
+A la Catalina que llegaba tarde al colegio y la grababan.
+A la Catalina que repitió tres veces el mismo año.
+A la Catalina que resistió no una, sino tres decepciones amorosas.
+A la Catalina que poliamaron.
+A la Catalina que usaron sin entender su valor.
+A la Catalina que se tinturó el cabello para cerrar ciclos.
+A la Catalina que tuvo su primera borrachera en casa.
+A la Catalina que atravesó injusticias que nunca mereció.
+A la Catalina que hizo tesis con su ex (sí, esa también).
+
+Feliz cumpleaños a la Catalina que convirtió a Sarhy e Isabella en sus refugios.
+A la Catalina que necesitó abrazos cuando su papá partió a Estados Unidos.
+A la Catalina que lloró cuando Vainilla se volvió estrella.
+A la Catalina que conocí hace más de un año en un espacio inesperado.
+A la Catalina que me enamora hablando con perritos.
+A la Catalina que me vuelve loca cuando explica en diez minutos lo que podría explicar en dos.
+A la Catalina que ama los audios.
+A la Catalina que envía selfies de su linda carita.
+A la Catalina que me escucha, me apoya y celebra cada detalle mío.
+
+Feliz cumpleaños a todas las versiones tuyas.
+A las que fuiste.
+A la que eres.
+Y a todas las que aún están por convertirse en realidad.
+
+Te admiro.  
+Te quiero.  
+Te amo.
+</div>
+
+<div class="playlist">
+<h2>Canciones que me recuerdan a ti</h2>
+<iframe src="https://open.spotify.com/embed/playlist/2YTA58o94wbbxc3rWefPfE"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+</iframe>
+</div>
+
+</div>
 </div>
 
 <script>
-const preview = new URLSearchParams(window.location.search).get("preview");
-const targetDate = new Date("2026-03-21T00:00:00-05:00").getTime();
-const now = new Date().getTime();
+// -------- COUNTDOWN --------
 
-const countdownScreen=document.getElementById("countdownScreen");
-const passwordScreen=document.getElementById("passwordScreen");
-const mainContent=document.getElementById("mainContent");
+const targetDate = new Date("2026-03-21T00:00:00-05:00");
+const countdown = document.getElementById("countdown");
+const countdownScreen = document.getElementById("countdownScreen");
+const passwordScreen = document.getElementById("passwordScreen");
 
-function showScreen(screen){
-document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-screen.classList.add("active");
+function updateCountdown(){
+const now = new Date();
+const diff = targetDate - now;
+
+if(diff <= 0){
+countdownScreen.classList.remove("active");
+passwordScreen.classList.add("active");
+return;
 }
 
-/* CONTROL INICIAL */
-if(preview==="true"){
-showScreen(passwordScreen);
-}
-else if(now>=targetDate){
-showScreen(passwordScreen);
-}
-else{
-showScreen(countdownScreen);
-startCountdown();
+const days = Math.floor(diff/(1000*60*60*24));
+const hours = Math.floor((diff/(1000*60*60))%24);
+const minutes = Math.floor((diff/1000/60)%60);
+const seconds = Math.floor((diff/1000)%60);
+
+countdown.innerHTML =
+days+"d "+hours+"h "+minutes+"m "+seconds+"s";
 }
 
-/* COUNTDOWN */
-function startCountdown(){
-const interval=setInterval(()=>{
-const current=new Date().getTime();
-const distance=targetDate-current;
+setInterval(updateCountdown,1000);
+updateCountdown();
 
-if(distance<=0){
-clearInterval(interval);
-showScreen(passwordScreen);
-}
-
-document.getElementById("days").innerText=Math.floor(distance/(1000*60*60*24));
-document.getElementById("hours").innerText=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-document.getElementById("minutes").innerText=Math.floor((distance%(1000*60*60))/(1000*60));
-document.getElementById("seconds").innerText=Math.floor((distance%(1000*60))/1000);
-},1000);
-}
-
-/* PASSWORD */
-const messages=[
-"No exactamente.",
-"Casi.",
-"Piensa con precisión.",
-"Recuerda bien.",
-"La memoria también tiene detalles.",
-"Observa mejor.",
-"No es casualidad."
-];
-let errorIndex=0;
+// -------- PASSWORD --------
 
 function checkPassword(){
-const input=document.getElementById("passwordInput").value.trim();
-if(input==="20:13"){
-unlock();
-}else{
-document.getElementById("errorMessage").innerText=messages[errorIndex%messages.length];
-errorIndex++;
+const input = document.getElementById("passwordInput").value;
+if(input === "20:13"){
+passwordScreen.classList.remove("active");
+document.getElementById("mainContent").style.display="block";
+window.scrollTo(0,0);
+revealPolaroids();
+}
+else{
+document.getElementById("error").innerText =
+"Intenta de nuevo. Presta atención a los detalles.";
 }
 }
 
-function unlock(){
-passwordScreen.style.opacity="0";
-setTimeout(()=>{
-passwordScreen.style.display="none";
-mainContent.style.opacity="1";
-revealPhotos();
-},800);
-}
+// -------- POLAROIDS --------
 
-/* FOTOS */
-function revealPhotos(){
-const container=document.getElementById("photoContainer");
-for(let i=1;i<=33;i++){
-const div=document.createElement("div");
+const polaroidContainer = document.getElementById("polaroids");
+
+for(let i=1;i<=22;i++){
+let div = document.createElement("div");
 div.className="polaroid";
-div.style.setProperty("--r",Math.floor(Math.random()*6-3)+"deg");
-div.innerHTML=`<img src="img/${String(i).padStart(2,'0')}.jpg">`;
-container.appendChild(div);
+div.style.setProperty("--r",Math.random());
+div.innerHTML = `<img src="img/${String(i).padStart(2,'0')}.jpg">`;
+polaroidContainer.appendChild(div);
 }
 
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("show");
-}
+function revealPolaroids(){
+document.querySelectorAll(".polaroid").forEach((p,i)=>{
+setTimeout(()=>p.classList.add("visible"), i*150);
 });
-},{threshold:0.2});
-
-document.querySelectorAll(".polaroid").forEach(p=>observer.observe(p));
+document.getElementById("letter").classList.add("visible");
 }
 </script>
 
