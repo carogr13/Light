@@ -347,6 +347,12 @@ setTimeout(()=>p.classList.add("visible"), i*150);
 });
 document.getElementById("letter").classList.add("visible");
 }
+
+  // --- TEMPORAL: Mostrar todo directamente para previsualización ---
+countdownScreen.classList.remove("active");
+passwordScreen.classList.remove("active");
+document.getElementById("mainContent").style.display = "block";
+revealPolaroids();
 </script>
 
 </body>
