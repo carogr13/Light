@@ -5,116 +5,144 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>21.03.2026</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500&display=swap" rel="stylesheet">
-
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
 body{
+margin:0;
 background:#000;
 color:#eaeaea;
-font-family:'Playfair Display', serif;
+font-family: 'Helvetica Neue', sans-serif;
 overflow-x:hidden;
-transition:opacity 1s ease;
 }
-.hidden{display:none}
-.fade{transition:opacity 1s ease}
-.center{
+
+/* Pantallas */
+.screen{
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100vh;
-display:flex;
-flex-direction:column;
+inset:0;
+display:none;
 justify-content:center;
 align-items:center;
+flex-direction:column;
 text-align:center;
-padding:40px;
+background:#000;
+transition:opacity .8s ease;
 }
-h1{font-weight:300;letter-spacing:2px;margin-bottom:40px}
-#countdown{display:flex;gap:30px;font-size:2rem}
-.time-box{display:flex;flex-direction:column}
-.time-box span:first-child{font-size:3rem}
+
+.screen.active{
+display:flex;
+}
+
+/* Countdown */
+.counter{
+font-size:3rem;
+letter-spacing:3px;
+margin-top:20px;
+}
+
+.counter span{
+margin:0 10px;
+}
+
+.subtitle{
+font-size:1.2rem;
+color:#fff3b0;
+margin-bottom:30px;
+max-width:600px;
+line-height:1.6;
+}
+
+/* Password */
 input{
-background:none;
+background:transparent;
 border:none;
 border-bottom:1px solid #fff3b0;
-color:#fff3b0;
-font-size:1.5rem;
+color:#fff;
+font-size:1.2rem;
 text-align:center;
 padding:10px;
 outline:none;
+width:200px;
 }
+
 button{
+margin-top:20px;
+padding:8px 20px;
 background:#fff3b0;
 border:none;
-padding:10px 20px;
-margin-top:20px;
 cursor:pointer;
-font-family:'Playfair Display', serif;
+transition:.3s;
 }
-#errorMessage{margin-top:20px;font-size:0.9rem;color:#888;min-height:20px}
+
+button:hover{
+opacity:.8;
+}
+
+#errorMessage{
+margin-top:15px;
+font-size:.9rem;
+color:#fff3b0;
+min-height:20px;
+}
+
+/* Contenido principal */
 #mainContent{
-padding:120px 10%;
 opacity:0;
-transition:opacity 2s ease;
+transition:opacity 1.2s ease;
+padding:120px 20px;
+text-align:center;
 }
-.section{margin-bottom:120px}
-.polaroids{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:60px;
-margin-top:60px;
-}
+
 .polaroid{
-background:#f8f8f8;
-padding:15px 15px 40px 15px;
-box-shadow:0 10px 30px rgba(255,243,176,0.08);
-transform:rotate(calc(var(--r)*1deg)) translateY(40px);
+width:220px;
+background:#111;
+padding:10px 10px 30px 10px;
+margin:40px auto;
 opacity:0;
-transition:all 0.8s ease;
+transform:translateY(40px) rotate(var(--r));
+transition:all 1.2s ease;
 }
-.polaroid img{width:100%;display:block}
-.show{opacity:1;transform:rotate(calc(var(--r)*1deg)) translateY(0)}
+
+.polaroid img{
+width:100%;
+display:block;
+}
+
+.polaroid.show{
+opacity:1;
+transform:translateY(0) rotate(var(--r));
+}
 </style>
 </head>
+
 <body>
 
-<div id="countdownScreen" class="center fade">
-<h1>Hay momentos que solo se abren para quien presta atención.</h1>
-<div id="countdown">
-<div class="time-box"><span id="days">0</span><span>Días</span></div>
-<div class="time-box"><span id="hours">0</span><span>Horas</span></div>
-<div class="time-box"><span id="minutes">0</span><span>Min</span></div>
-<div class="time-box"><span id="seconds">0</span><span>Seg</span></div>
+<!-- COUNTDOWN -->
+<div id="countdownScreen" class="screen active">
+<div class="subtitle">
+Hay momentos que solo se abren para quien presta atención.
+<br><br>
+Prepárate para el reto que está a punto de comenzar.
+</div>
+<div class="counter">
+<span id="days">0</span>d
+<span id="hours">0</span>h
+<span id="minutes">0</span>m
+<span id="seconds">0</span>s
 </div>
 </div>
 
-<div id="passwordScreen" class="center hidden fade">
-<h1>¿Cuál es la hora exacta de la primera foto que tomé relacionada contigo?</h1>
-<input type="text" id="passwordInput" placeholder="00:00">
-<button onclick="checkPassword()">Continuar</button>
+<!-- PASSWORD -->
+<div id="passwordScreen" class="screen">
+<div class="subtitle">
+¿Cuál es la hora exacta de la primera foto que tomé relacionada contigo?
+</div>
+<input id="passwordInput" type="text" placeholder="00:00">
+<button onclick="checkPassword()">Desbloquear</button>
 <div id="errorMessage"></div>
 </div>
 
+<!-- CONTENIDO -->
 <div id="mainContent">
-<div class="section">
-<h1>Feliz cumpleaños.</h1>
-<p style="margin-top:40px; max-width:700px; line-height:1.8;">
-A la Catalina que empezó sin saber que iba a quedarse.<br><br>
-A la Catalina que sonreía sin imaginar que alguien estaba empezando a mirarla distinto.<br><br>
-A la Catalina que no sabía que una foto a las 20:13 iba a convertirse en historia.<br><br>
-A la Catalina que fue creciendo, cambiando, entendiendo.<br><br>
-A la Catalina que aprendió, que sintió, que dudó.<br><br>
-A la Catalina que ama con profundidad.<br><br>
-Y a la Catalina que hoy cumple años…<br><br>
-Gracias por existir en cada una de tus versiones.
-</p>
-</div>
-
-<div class="section">
-<div class="polaroids" id="photoContainer"></div>
-</div>
+<div id="photoContainer"></div>
 </div>
 
 <script>
@@ -122,48 +150,46 @@ const preview = new URLSearchParams(window.location.search).get("preview");
 const targetDate = new Date("2026-03-21T00:00:00-05:00").getTime();
 const now = new Date().getTime();
 
-const countdownScreen = document.getElementById("countdownScreen");
-const passwordScreen = document.getElementById("passwordScreen");
-const mainContent = document.getElementById("mainContent");
+const countdownScreen=document.getElementById("countdownScreen");
+const passwordScreen=document.getElementById("passwordScreen");
+const mainContent=document.getElementById("mainContent");
 
-// CONTROL INICIAL
-if(preview === "true"){
-countdownScreen.style.display = "none";
-passwordScreen.classList.remove("hidden");
-} 
-else if(now > targetDate){
-countdownScreen.style.display = "none";
-passwordScreen.classList.remove("hidden");
-} 
-else {
-passwordScreen.classList.add("hidden");
+function showScreen(screen){
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+screen.classList.add("active");
+}
+
+/* CONTROL INICIAL */
+if(preview==="true"){
+showScreen(passwordScreen);
+}
+else if(now>=targetDate){
+showScreen(passwordScreen);
+}
+else{
+showScreen(countdownScreen);
 startCountdown();
 }
 
-// COUNTDOWN
+/* COUNTDOWN */
 function startCountdown(){
-const interval = setInterval(()=>{
-const current = new Date().getTime();
-const distance = targetDate - current;
+const interval=setInterval(()=>{
+const current=new Date().getTime();
+const distance=targetDate-current;
 
-if(distance <= 0){
+if(distance<=0){
 clearInterval(interval);
-countdownScreen.style.opacity="0";
-setTimeout(()=>{
-countdownScreen.style.display="none";
-passwordScreen.classList.remove("hidden");
+showScreen(passwordScreen);
+}
+
+document.getElementById("days").innerText=Math.floor(distance/(1000*60*60*24));
+document.getElementById("hours").innerText=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+document.getElementById("minutes").innerText=Math.floor((distance%(1000*60*60))/(1000*60));
+document.getElementById("seconds").innerText=Math.floor((distance%(1000*60))/1000);
 },1000);
 }
 
-document.getElementById("days").innerText = Math.floor(distance/(1000*60*60*24));
-document.getElementById("hours").innerText = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-document.getElementById("minutes").innerText = Math.floor((distance%(1000*60*60))/(1000*60));
-document.getElementById("seconds").innerText = Math.floor((distance%(1000*60))/1000);
-
-},1000);
-}
-
-// PASSWORD
+/* PASSWORD */
 const messages=[
 "No exactamente.",
 "Casi.",
@@ -191,15 +217,16 @@ setTimeout(()=>{
 passwordScreen.style.display="none";
 mainContent.style.opacity="1";
 revealPhotos();
-},1000);
+},800);
 }
 
+/* FOTOS */
 function revealPhotos(){
 const container=document.getElementById("photoContainer");
 for(let i=1;i<=33;i++){
 const div=document.createElement("div");
 div.className="polaroid";
-div.style.setProperty("--r",Math.floor(Math.random()*6-3));
+div.style.setProperty("--r",Math.floor(Math.random()*6-3)+"deg");
 div.innerHTML=`<img src="img/${String(i).padStart(2,'0')}.jpg">`;
 container.appendChild(div);
 }
