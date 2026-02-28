@@ -126,16 +126,22 @@ const countdownScreen = document.getElementById("countdownScreen");
 const passwordScreen = document.getElementById("passwordScreen");
 const mainContent = document.getElementById("mainContent");
 
+// CONTROL INICIAL
 if(preview === "true"){
-countdownScreen.classList.add("hidden");
+countdownScreen.style.display = "none";
 passwordScreen.classList.remove("hidden");
+} 
+else if(now > targetDate){
+countdownScreen.style.display = "none";
+passwordScreen.classList.remove("hidden");
+} 
+else {
+passwordScreen.classList.add("hidden");
+startCountdown();
 }
 
-if(now > targetDate && preview !== "true"){
-countdownScreen.classList.add("hidden");
-passwordScreen.classList.remove("hidden");
-}
-
+// COUNTDOWN
+function startCountdown(){
 const interval = setInterval(()=>{
 const current = new Date().getTime();
 const distance = targetDate - current;
@@ -144,7 +150,7 @@ if(distance <= 0){
 clearInterval(interval);
 countdownScreen.style.opacity="0";
 setTimeout(()=>{
-countdownScreen.classList.add("hidden");
+countdownScreen.style.display="none";
 passwordScreen.classList.remove("hidden");
 },1000);
 }
@@ -155,7 +161,9 @@ document.getElementById("minutes").innerText = Math.floor((distance%(1000*60*60)
 document.getElementById("seconds").innerText = Math.floor((distance%(1000*60))/1000);
 
 },1000);
+}
 
+// PASSWORD
 const messages=[
 "No exactamente.",
 "Casi.",
@@ -180,7 +188,7 @@ errorIndex++;
 function unlock(){
 passwordScreen.style.opacity="0";
 setTimeout(()=>{
-passwordScreen.classList.add("hidden");
+passwordScreen.style.display="none";
 mainContent.style.opacity="1";
 revealPhotos();
 },1000);
