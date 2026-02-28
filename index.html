@@ -9,7 +9,6 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-
 body{
 background:#000;
 color:#eaeaea;
@@ -17,10 +16,9 @@ font-family:'Playfair Display', serif;
 overflow-x:hidden;
 transition:opacity 1s ease;
 }
-
-.hidden{opacity:0;pointer-events:none}
-
-.center-screen{
+.hidden{display:none}
+.fade{transition:opacity 1s ease}
+.center{
 position:fixed;
 top:0;
 left:0;
@@ -32,30 +30,11 @@ justify-content:center;
 align-items:center;
 text-align:center;
 padding:40px;
-transition:opacity 1s ease;
 }
-
-h1{
-font-weight:300;
-letter-spacing:2px;
-margin-bottom:40px;
-}
-
-#countdown{
-display:flex;
-gap:30px;
-font-size:2rem;
-}
-
-.time-box{
-display:flex;
-flex-direction:column;
-}
-
-.time-box span:first-child{
-font-size:3rem;
-}
-
+h1{font-weight:300;letter-spacing:2px;margin-bottom:40px}
+#countdown{display:flex;gap:30px;font-size:2rem}
+.time-box{display:flex;flex-direction:column}
+.time-box span:first-child{font-size:3rem}
 input{
 background:none;
 border:none;
@@ -64,10 +43,8 @@ color:#fff3b0;
 font-size:1.5rem;
 text-align:center;
 padding:10px;
-margin-top:20px;
 outline:none;
 }
-
 button{
 background:#fff3b0;
 border:none;
@@ -76,65 +53,34 @@ margin-top:20px;
 cursor:pointer;
 font-family:'Playfair Display', serif;
 }
-
-#errorMessage{
-margin-top:20px;
-font-size:0.9rem;
-color:#888;
-min-height:20px;
-}
-
+#errorMessage{margin-top:20px;font-size:0.9rem;color:#888;min-height:20px}
 #mainContent{
-padding:100px 10%;
+padding:120px 10%;
 opacity:0;
 transition:opacity 2s ease;
 }
-
-.section{
-margin-bottom:120px;
-}
-
+.section{margin-bottom:120px}
 .polaroids{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:60px;
 margin-top:60px;
 }
-
 .polaroid{
 background:#f8f8f8;
 padding:15px 15px 40px 15px;
-box-shadow:0 10px 30px rgba(255,243,176,0.1);
-transform:rotate(calc(var(--r)*1deg));
+box-shadow:0 10px 30px rgba(255,243,176,0.08);
+transform:rotate(calc(var(--r)*1deg)) translateY(40px);
 opacity:0;
-transform-origin:center;
 transition:all 0.8s ease;
 }
-
-.polaroid img{
-width:100%;
-display:block;
-}
-
-.show{
-opacity:1;
-transform:rotate(calc(var(--r)*1deg)) translateY(0);
-}
-
-.fade-out{
-opacity:0;
-}
-
-.fade-in{
-opacity:1;
-}
+.polaroid img{width:100%;display:block}
+.show{opacity:1;transform:rotate(calc(var(--r)*1deg)) translateY(0)}
 </style>
 </head>
-
 <body>
 
-<!-- FASE 1 -->
-<div id="countdownScreen" class="center-screen">
+<div id="countdownScreen" class="center fade">
 <h1>Hay momentos que solo se abren para quien presta atención.</h1>
 <div id="countdown">
 <div class="time-box"><span id="days">0</span><span>Días</span></div>
@@ -144,17 +90,14 @@ opacity:1;
 </div>
 </div>
 
-<!-- FASE 2 -->
-<div id="passwordScreen" class="center-screen hidden">
+<div id="passwordScreen" class="center hidden fade">
 <h1>¿Cuál es la hora exacta de la primera foto que tomé relacionada contigo?</h1>
 <input type="text" id="passwordInput" placeholder="00:00">
 <button onclick="checkPassword()">Continuar</button>
 <div id="errorMessage"></div>
 </div>
 
-<!-- FASE 4 -->
 <div id="mainContent">
-
 <div class="section">
 <h1>Feliz cumpleaños.</h1>
 <p style="margin-top:40px; max-width:700px; line-height:1.8;">
@@ -170,39 +113,39 @@ Gracias por existir en cada una de tus versiones.
 </div>
 
 <div class="section">
-<div class="polaroids">
-<script>
-for(let i=1;i<=33;i++){
-document.write(`
-<div class="polaroid" style="--r:${Math.floor(Math.random()*6-3)}">
-<img src="img/${String(i).padStart(2,'0')}.jpg">
-</div>
-`);
-}
-</script>
+<div class="polaroids" id="photoContainer"></div>
 </div>
 </div>
 
-</div>
-
 <script>
-// COUNTDOWN
-const targetDate = new Date("2026-02-21T00:00:00-05:00").getTime();
+const preview = new URLSearchParams(window.location.search).get("preview");
+const targetDate = new Date("2026-03-21T00:00:00-05:00").getTime();
+const now = new Date().getTime();
+
 const countdownScreen = document.getElementById("countdownScreen");
 const passwordScreen = document.getElementById("passwordScreen");
 const mainContent = document.getElementById("mainContent");
 
+if(preview === "true"){
+countdownScreen.classList.add("hidden");
+passwordScreen.classList.remove("hidden");
+}
+
+if(now > targetDate && preview !== "true"){
+countdownScreen.classList.add("hidden");
+passwordScreen.classList.remove("hidden");
+}
+
 const interval = setInterval(()=>{
-const now = new Date().getTime();
-const distance = targetDate - now;
+const current = new Date().getTime();
+const distance = targetDate - current;
 
 if(distance <= 0){
 clearInterval(interval);
-countdownScreen.classList.add("fade-out");
+countdownScreen.style.opacity="0";
 setTimeout(()=>{
-countdownScreen.style.display="none";
+countdownScreen.classList.add("hidden");
 passwordScreen.classList.remove("hidden");
-passwordScreen.classList.add("fade-in");
 },1000);
 }
 
@@ -213,13 +156,6 @@ document.getElementById("seconds").innerText = Math.floor((distance%(1000*60))/1
 
 },1000);
 
-// Si ya pasó la fecha
-if(new Date().getTime() > targetDate){
-countdownScreen.style.display="none";
-passwordScreen.classList.remove("hidden");
-}
-
-// PASSWORD
 const messages=[
 "No exactamente.",
 "Casi.",
@@ -241,19 +177,25 @@ errorIndex++;
 }
 }
 
-// UNLOCK
 function unlock(){
-passwordScreen.classList.add("fade-out");
+passwordScreen.style.opacity="0";
 setTimeout(()=>{
-passwordScreen.style.display="none";
+passwordScreen.classList.add("hidden");
 mainContent.style.opacity="1";
 revealPhotos();
 },1000);
 }
 
-// PHOTO REVEAL
 function revealPhotos(){
-const polaroids=document.querySelectorAll(".polaroid");
+const container=document.getElementById("photoContainer");
+for(let i=1;i<=33;i++){
+const div=document.createElement("div");
+div.className="polaroid";
+div.style.setProperty("--r",Math.floor(Math.random()*6-3));
+div.innerHTML=`<img src="img/${String(i).padStart(2,'0')}.jpg">`;
+container.appendChild(div);
+}
+
 const observer=new IntersectionObserver(entries=>{
 entries.forEach(entry=>{
 if(entry.isIntersecting){
@@ -261,7 +203,8 @@ entry.target.classList.add("show");
 }
 });
 },{threshold:0.2});
-polaroids.forEach(p=>observer.observe(p));
+
+document.querySelectorAll(".polaroid").forEach(p=>observer.observe(p));
 }
 </script>
 
