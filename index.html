@@ -140,26 +140,7 @@ h1 {
   background:#c9a227;
   color:white;
 }
-let fotosAbiertas = false;
 
-function toggleFotos() {
-  const extras = document.querySelectorAll(".extra");
-  const boton = document.querySelector(".ver-mas-btn");
-
-  fotosAbiertas = !fotosAbiertas;
-
-  extras.forEach(foto => {
-    if (fotosAbiertas) {
-      foto.classList.add("show");
-    } else {
-      foto.classList.remove("show");
-    }
-  });
-
-  boton.textContent = fotosAbiertas 
-    ? "Ver menos recuerdos" 
-    : "Ver más recuerdos";
-}
   
 /* CARTA */
 
@@ -245,7 +226,6 @@ como siempre mereciste.
       <div class="polaroid" style="--r:0.2"><img src="img/11.jpeg"></div>
       <div class="polaroid" style="--r:0.2"><img src="img/12.jpeg"></div>
 
-</div>
 
 <div class="polaroid extra" style="--r:0.3"><img src="img/13.jpg"></div>
 <div class="polaroid extra" style="--r:0.7"><img src="img/14.jpg"></div>
@@ -253,7 +233,7 @@ como siempre mereciste.
 <div class="polaroid extra" style="--r:0.6"><img src="img/16.jpg"></div>
 <div class="polaroid extra" style="--r:0.2"><img src="img/17.jpg"></div>
 <div class="polaroid extra" style="--r:0.8"><img src="img/18.jpg"></div>
-<div class="polaroid extra" style="--r:0.5"><img src="img/19.jpg"></div>
+<div class="polaroid extra" style="--r:0.5"><img src="img/19.jpg"></div></div>
 <div class="arrow" onclick="scrollToSection('cartaSection')">↓</div>
  <button class="ver-mas-btn" onclick="toggleFotos()">
   Ver más recuerdos
@@ -425,7 +405,26 @@ function playLoop() {
 }
 
 document.body.addEventListener("click", startMusic, { once: true });
+let fotosAbiertas = false;
 
+function toggleFotos() {
+  const extras = document.querySelectorAll(".extra");
+  const boton = document.querySelector(".ver-mas-btn");
+
+  fotosAbiertas = !fotosAbiertas;
+
+  extras.forEach(foto => {
+    if (fotosAbiertas) {
+      foto.classList.add("show");
+    } else {
+      foto.classList.remove("show");
+    }
+  });
+
+  boton.textContent = fotosAbiertas 
+    ? "Ver menos recuerdos" 
+    : "Ver más recuerdos";
+}
 </script>
 
 </body>
