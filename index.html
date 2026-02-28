@@ -112,7 +112,55 @@ h1 {
 .polaroid:hover {
   transform:scale(1.05) rotate(0deg);
 }
+  .extra {
+  display:none;
+  opacity:0;
+  transform:translateY(20px);
+  transition:all 0.6s ease;
+}
 
+.extra.show {
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+
+.ver-mas-btn {
+  margin-top:50px;
+  padding:12px 28px;
+  border:1px solid #c9a227;
+  background:transparent;
+  font-family:'Playfair Display', serif;
+  font-size:1rem;
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+
+.ver-mas-btn:hover {
+  background:#c9a227;
+  color:white;
+}
+let fotosAbiertas = false;
+
+function toggleFotos() {
+  const extras = document.querySelectorAll(".extra");
+  const boton = document.querySelector(".ver-mas-btn");
+
+  fotosAbiertas = !fotosAbiertas;
+
+  extras.forEach(foto => {
+    if (fotosAbiertas) {
+      foto.classList.add("show");
+    } else {
+      foto.classList.remove("show");
+    }
+  });
+
+  boton.textContent = fotosAbiertas 
+    ? "Ver menos recuerdos" 
+    : "Ver más recuerdos";
+}
+  
 /* CARTA */
 
 .carta {
@@ -198,7 +246,16 @@ como siempre mereciste.
       <div class="polaroid" style="--r:0.2"><img src="img/12.jpeg"></div>
 
 </div>
-
+  <button class="ver-mas-btn" onclick="toggleFotos()">
+  Ver más recuerdos
+</button>
+<div class="polaroid extra" style="--r:0.3"><img src="img/13.jpg"></div>
+<div class="polaroid extra" style="--r:0.7"><img src="img/14.jpg"></div>
+<div class="polaroid extra" style="--r:0.4"><img src="img/15.jpg"></div>
+<div class="polaroid extra" style="--r:0.6"><img src="img/16.jpg"></div>
+<div class="polaroid extra" style="--r:0.2"><img src="img/17.jpg"></div>
+<div class="polaroid extra" style="--r:0.8"><img src="img/18.jpg"></div>
+<div class="polaroid extra" style="--r:0.5"><img src="img/19.jpg"></div>
 <div class="arrow" onclick="scrollToSection('cartaSection')">↓</div>
 
 </section>
