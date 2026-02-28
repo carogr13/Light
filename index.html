@@ -8,12 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-/* ------------------- RESET ------------------- */
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
 body { font-family:'Inter',sans-serif; background:#f6f1e8; color:#111; overflow-x:hidden; }
 
-/* ------------------- MAIN CONTENT ------------------- */
 .wrapper {
   border: double 4px #cfcfcf;
   margin:20px; padding:40px 20px;
@@ -21,11 +19,9 @@ body { font-family:'Inter',sans-serif; background:#f6f1e8; color:#111; overflow-
 
 section {
   min-height:100vh; display:flex; flex-direction:column;
-  justify-content:center; align-items:center; opacity:0; transform:translateY(40px);
+  justify-content:center; align-items:center; opacity:1; transform:translateY(0);
   transition:all 1s ease; text-align:center; position:relative;
 }
-
-section.visible { opacity:1; transform:translateY(0); }
 
 h1 { font-family:'Playfair Display', serif; font-size:4rem; font-weight:700; }
 .luz span { font-style:italic; font-weight:300; }
@@ -33,7 +29,6 @@ h1 { font-family:'Playfair Display', serif; font-size:4rem; font-weight:700; }
 .arrow { margin-top:60px; font-size:2rem; cursor:pointer; color:#c9a227; animation:bounce 2s infinite; }
 @keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(10px); } }
 
-/* ------------------- POLAROIDS ------------------- */
 .polaroids {
   display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:40px; margin-top:60px; justify-items:center;
@@ -41,20 +36,19 @@ h1 { font-family:'Playfair Display', serif; font-size:4rem; font-weight:700; }
 .polaroid {
   width:220px; background:#fff; padding:15px 15px 40px 15px;
   box-shadow:0 10px 30px rgba(0,0,0,0.1);
-  transform:rotate(calc(var(--r)*1deg)); opacity:0;
+  transform:rotate(calc(var(--r)*1deg)) translateY(40px);
+  opacity:0;
   transition:all 0.8s ease;
 }
 .polaroid.show { opacity:1; transform:rotate(calc(var(--r)*1deg)) translateY(0); }
 .polaroid img { width:100%; display:block; }
 .polaroid:hover { transform:scale(1.05) rotate(0deg); }
 
-/* ------------------- CARTA ------------------- */
 .carta {
   max-width:800px; text-align:justify; font-size:1.1rem; line-height:1.8;
   white-space:pre-wrap; border-right:2px solid #c9a227; padding-right:10px; margin-top:50px;
 }
 
-/* ------------------- PLAYLIST ------------------- */
 .playlist { text-align:center; margin-top:80px; }
 .playlist h2 { margin-bottom:40px; font-size:28px; font-weight:400; font-family:'Playfair Display',serif; }
 .playlist iframe { border-radius:12px; width:100%; max-width:600px; height:380px; }
@@ -64,12 +58,10 @@ h1 { font-family:'Playfair Display', serif; font-size:4rem; font-weight:700; }
 
 <body>
 
-<!-- MAIN CONTENT (DIRECTO) -->
 <div id="mainContent" class="wrapper">
 
-  <!-- SECCIÓN 1: MENSAJE CENTRAL -->
-  <section id="inicio" class="visible">
-    <h1 class="luz"><strong id="luzClick">Luz</strong> <span>eres tú</span></h1>
+  <section id="inicio">
+    <h1 class="luz"><strong>Luz</strong> <span>eres tú</span></h1>
     <div class="frase">
       Algo comenzó un 9 de febrero de 2025…<br>
       pero el tiempo necesitó su propio ritmo<br>
@@ -79,19 +71,16 @@ h1 { font-family:'Playfair Display', serif; font-size:4rem; font-weight:700; }
     <div class="arrow" onclick="scrollToSection('fotos')">↓</div>
   </section>
 
-  <!-- SECCIÓN 2: POLAROIDS -->
   <section id="fotos">
     <div class="polaroids" id="polaroidContainer"></div>
     <div class="arrow" onclick="scrollToSection('cartaSection')">↓</div>
   </section>
 
-  <!-- SECCIÓN 3: CARTA -->
   <section id="cartaSection">
     <div id="carta" class="carta"></div>
     <div class="arrow" onclick="scrollToSection('musica')">↓</div>
   </section>
 
-  <!-- SECCIÓN 4: SPOTIFY -->
   <section id="musica" class="playlist">
     <h2>Nuestra música</h2>
     <iframe src="https://open.spotify.com/embed/playlist/2YTA58o94wbbxc3rWefPfE" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
@@ -100,12 +89,12 @@ h1 { font-family:'Playfair Display', serif; font-size:4rem; font-weight:700; }
 </div>
 
 <script>
-// ------------------- SCROLL -------------------
+// SCROLL
 function scrollToSection(id){
   document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
-// ------------------- POLAROIDS -------------------
+// POLAROIDS
 const polaroidContainer = document.getElementById("polaroidContainer");
 for(let i=1;i<=33;i++){
   let div = document.createElement("div");
@@ -115,18 +104,21 @@ for(let i=1;i<=33;i++){
   polaroidContainer.appendChild(div);
 }
 
-// Animación al aparecer usando IntersectionObserver
-const polaroids = document.querySelectorAll(".polaroid");
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add("show");
-    }
-  });
-},{threshold:0.2});
-polaroids.forEach(p=>observer.observe(p));
+// Animación polaroids al cargar
+function revealPolaroids(){
+  const polaroids = document.querySelectorAll(".polaroid");
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("show");
+      }
+    });
+  },{threshold:0.2});
+  polaroids.forEach(p=>observer.observe(p));
+}
+revealPolaroids();
 
-// ------------------- CARTA TYPEWRITER -------------------
+// CARTA TYPEWRITER
 const texto=`Hola, vida linda.
 
 Cumpliendo con mi propósito de aportar un pequeño granito de arena para que tu cumpleaños número veintiséis sea especial, hoy te entrego este espacio como recordatorio de lo que significas en mi vida, del lugar que ocupas y de mi deseo constante de que recuerdes que mereces todo lo hermoso que das.
@@ -166,7 +158,6 @@ Gracias por ser hogar.`;
 
 let i=0;
 const carta = document.getElementById("carta");
-
 function typeWriter(){
   if(i<texto.length){
     carta.innerHTML += texto.charAt(i);
@@ -174,7 +165,7 @@ function typeWriter(){
     setTimeout(typeWriter,25);
   }
 }
-typeWriter(); // iniciar automáticamente
+typeWriter();
 </script>
 
 </body>
