@@ -348,9 +348,11 @@ setTimeout(()=>p.classList.add("visible"), i*150);
 document.getElementById("letter").classList.add("visible");
 }
 
-  // --- TEMPORAL: Mostrar todo directamente para previsualización ---
+// --- TEMPORAL: Mostrar todo directamente para previsualización ---
 countdownScreen.classList.remove("active");
+countdownScreen.style.display = "none";   // <-- fuerza que desaparezca
 passwordScreen.classList.remove("active");
+passwordScreen.style.display = "none";    // <-- opcional, si estaba visible
 document.getElementById("mainContent").style.display = "block";
 revealPolaroids();
 </script>
