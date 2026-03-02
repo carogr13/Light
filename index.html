@@ -8,6 +8,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
+  .fraseInicio {
+  font-size:1.6rem;
+  margin-bottom:25px;
+  letter-spacing:2px;
+  opacity:0.9;
+}
+  
 #pantallaInicio {
   position:fixed;
   top:0;
@@ -355,8 +362,9 @@ h1 {
 <body>
 <div id="pantallaInicio">
   <div id="countdownContainer">
-    <div id="countdown"></div>
-  </div>
+  <p class="fraseInicio">Cuando el reloj marque cero…</p>
+  <div id="countdown"></div>
+</div>
 
   <div id="acertijoContainer" style="display:none;">
     <p class="pregunta">
@@ -727,10 +735,9 @@ setTimeout(() => {
   const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
   const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
   const segundos = Math.floor((diferencia / 1000) % 60);
-  const milisegundos = diferencia % 1000;
 
   countdownEl.innerHTML =
-    `${dias}d ${horas}h ${minutos}m ${segundos}s ${milisegundos}`;
+  `${dias}d ${horas}h ${minutos}m ${segundos}s`;
 }
 
 const intervalo = setInterval(actualizarCountdown, 10);
