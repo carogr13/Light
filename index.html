@@ -8,7 +8,70 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
+#pantallaInicio {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:9999;
+  text-align:center;
+  font-family:'Playfair Display', serif;
+}
 
+#countdown {
+  font-size:2rem;
+  letter-spacing:2px;
+}
+
+#acertijoContainer {
+  max-width:500px;
+}
+
+.pregunta {
+  font-size:1.4rem;
+  margin-bottom:20px;
+}
+
+#acertijoContainer input {
+  padding:10px;
+  font-size:1rem;
+  text-align:center;
+}
+
+#acertijoContainer button {
+  padding:10px 20px;
+  margin-top:10px;
+  cursor:pointer;
+}
+
+#mensajeError {
+  margin-top:15px;
+  font-style:italic;
+  opacity:0.8;
+}
+
+.destello {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:white;
+  top:0;
+  left:0;
+  animation:flash 0.6s ease;
+  z-index:10000;
+}
+
+@keyframes flash {
+  0% {opacity:1;}
+  100% {opacity:0;}
+}
 html {
   scroll-behavior: smooth;
 }
@@ -290,8 +353,23 @@ h1 {
 </head>
 
 <body>
+<div id="pantallaInicio">
+  <div id="countdownContainer">
+    <div id="countdown"></div>
+  </div>
 
-<div class="wrapper">
+  <div id="acertijoContainer" style="display:none;">
+    <p class="pregunta">
+      ¿Cuál es la hora que corresponde a la primera foto que tomé, relacionada contigo?
+    </p>
+
+    <input type="text" id="respuesta" placeholder="hh:mm">
+    <button onclick="verificarRespuesta()">Responder</button>
+    <p id="mensajeError"></p>
+  </div>
+</div>
+<div id="contenidoPrincipal" style="display:none;">
+  <div class="wrapper">
 
 <!-- SECCIÓN 1 -->
 <section id="inicio" class="visible">
@@ -613,7 +691,69 @@ document.getElementById("loveButton").addEventListener("click", function() {
   }, 200);
 });
 </script>
+</div>
+  <script>
+const fechaObjetivo = new Date("March 25, 2026 00:00:00").getTime();
 
+const countdownEl = document.getElementById("countdown");
+const acertijoContainer = document.getElementById("acertijoContainer");
+const countdownContainer = document.getElementById("countdownContainer");
+
+const errores = [
+  "Mmm… no exactamente.",
+  "Inténtalo otra vez.",
+  "Estás cerca… o tal vez no.",
+  "Piensa en esa primera foto.",
+  "No es esa hora… todavía."
+];
+
+function actualizarCountdown() {
+  const ahora = new Date().getTime();
+  const diferencia = fechaObjetivo - ahora;
+
+  if (diferencia <= 0) {
+    clearInterval(intervalo);
+    countdownContainer.style.display = "none";
+    acertijoContainer.style.display = "block";
+    return;
+  }
+
+  const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+  const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+  const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+  const segundos = Math.floor((diferencia / 1000) % 60);
+  const milisegundos = diferencia % 1000;
+
+  countdownEl.innerHTML =
+    `${dias}d ${horas}h ${minutos}m ${segundos}s ${milisegundos}`;
+}
+
+const intervalo = setInterval(actualizarCountdown, 10);
+
+function verificarRespuesta() {
+  const respuesta = document.getElementById("respuesta").value.trim();
+  const mensajeError = document.getElementById("mensajeError");
+
+  if (respuesta === "20:13") {
+    desbloquear();
+  } else {
+    const random = errores[Math.floor(Math.random() * errores.length)];
+    mensajeError.textContent = random;
+  }
+}
+
+function desbloquear() {
+  const flash = document.createElement("div");
+  flash.classList.add("destello");
+  document.body.appendChild(flash);
+
+  setTimeout(() => {
+    document.getElementById("pantallaInicio").style.display = "none";
+    document.getElementById("contenidoPrincipal").style.display = "block";
+    flash.remove();
+  }, 600);
+}
+</script>
 </body>
 </html>
 
