@@ -714,7 +714,12 @@ function actualizarCountdown() {
   if (diferencia <= 0) {
     clearInterval(intervalo);
     countdownContainer.style.display = "none";
-    acertijoContainer.style.display = "block";
+  acertijoContainer.style.display = "block";
+acertijoContainer.style.opacity = 0;
+setTimeout(() => {
+  acertijoContainer.style.transition = "opacity 1s ease";
+  acertijoContainer.style.opacity = 1;
+}, 50);
     return;
   }
 
